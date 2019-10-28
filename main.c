@@ -8,6 +8,10 @@
 
 
 double to_rad(double);
+void multiply(int N,
+              double mat1[][N],  
+              double mat2[][N],  
+              double res[][N]);
 void yuv_to_dct(int N, int M, int16_t* DCTMatrix[][M], uint8_t *Matrix[][M]);
 void        init_no_args(uint8_t **YUV_data);
 uint32_t    getFileSize(FILE *fp, uint32_t pointer_return);
@@ -107,12 +111,8 @@ int main(int argc, char *argv[]){
             for(j=0;j<sample_size;j++){
                 pos = curr_row*sample_size*sample_size*columns + curr_col*sample_size + width*i + j;
                 
-                energy_pixel[i][j] += //(YUV_Y_data[pos]*YUV_Y_data[pos]);
+                energy_pixel[i][j] += (YUV_Y_data[pos]*YUV_Y_data[pos]);
                 energy_coef[i][j] += (DCT_Y_data[pos]*DCT_Y_data[pos]);
-
-                // printf("%d %d %d\n", energy_pixel[i][j], YUV_Y_data[pos], YUV_Y_data[pos]<<1);
-                // printf("%d %d %d %d  \n", energy_pixel[i][j], YUV_Y_data[pos], energy_coef[i][j], DCT_Y_data[pos]);
-                // sleep(3);
             }
             puts("");
         }
@@ -124,19 +124,81 @@ int main(int argc, char *argv[]){
     puts("----- Energy Pixel -----");
     for(i=0;i<sample_size;i++){
         for(j=0;j<sample_size;j++){
-            printf("%d ", energy_pixel[i][j]);
+            energy_pixel[i][j] /= total_samples;
+            printf("%d", energy_pixel[i][j]);
         }
         puts("");
     }
+
     puts("----- Energy Coef -----");
     for(i=0;i<sample_size;i++){
         for(j=0;j<sample_size;j++){
+            energy_coef[i][j] /= total_samples;
             printf("%d ", energy_coef[i][j]);
+        }
+        puts("");
+    }
+
+    puts("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+    double res[4][4], res2[4][4];
+    double a = 0.5, b = sqrt((double)2/5);
+    double Cf[4][4] = { 
+        {1, 1, 1, 1},
+        {2, 1,-1,-2},
+        {1,-1,-1, 1},
+        {1,-2, 2,-1},
+    };
+    double CfT[4][4] = { 
+        {1, 2, 1, 1},
+        {1, 1,-1,-2},
+        {1,-1,-1, 2},
+        {1,-2, 1,-1},
+    };
+    double exampleTable[4][4] = {
+      { 5, 8,11,10},
+      { 9, 8, 4,12},
+      { 1,10,11, 4},
+      {19, 6,15, 7}  
+    };
+    double Ef[4][4] = {
+        {pow(a, 2), (a*b)/2, pow(a, 2), (a*b)/2},
+        {(a*b)/2, (pow(b, 2)/4), (a*b)/2, (pow(b, 2)/4)},
+        {pow(a, 2), (a*b)/2, pow(a, 2), (a*b)/2},
+        {(a*b)/2, (pow(b, 2)/4), (a*b)/2, (pow(b, 2)/4)},
+    };
+    multiply(4, Cf, exampleTable, res);
+    multiply(4, res, CfT, res2);
+
+    for(i=0;i<4;i++){
+        for(j=0;j<4;j++){
+            res2[i][j] *= Ef[i][j];
+            // printf("%lf %lf %lf %lf %lf\n", Cf[i][j], CfT[i][j],
+            //                         exampleTable[i][j], Ef[i][j],
+            //                         res[i][j]);
+            printf("%.3lf ", res2[i][j]);
+            // sleep(5);
         }
         puts("");
     }
     return 0;
 }
+
+void multiply(int N,
+              double mat1[][N],  
+              double mat2[][N],  
+              double res[][N]) { 
+    int i, j, k; 
+    for (i = 0; i < N; i++) 
+    { 
+        for (j = 0; j < N; j++) 
+        { 
+            res[i][j] = 0; 
+            for (k = 0; k < N; k++) 
+                res[i][j] += mat1[i][k] *  
+                             mat2[k][j]; 
+        } 
+    } 
+} 
 
 void yuv_to_dct(int N, int M, int16_t* DCTMatrix[][M], uint8_t *Matrix[][M]){
     int i, j, x, y;
