@@ -3,7 +3,7 @@ PROGRAMS = clean main
 all: $(PROGRAMS)
 
 main:
-	gcc main.c -o main
+	gcc main.c -o main -lm
 
 .PHONY: clean
 clean:
