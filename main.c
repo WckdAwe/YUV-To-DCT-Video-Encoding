@@ -78,7 +78,7 @@ int main(int argc, char *argv[]){
             break;
         default:
             puts("Invalid execution of program. Try:");
-            printf("%s, or\n%s <path:name.yuv> <int:width> <int:height> <int:frame_rate>\n", argv[0], argv[0]);
+            printf("%s, or\n%s <path:name.yuv> <int:width> <int:height>\n", argv[0], argv[0]);
             break;
     }
 
