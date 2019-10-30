@@ -79,7 +79,7 @@ int main(int argc, char *argv[]){
         default:
             puts("Invalid execution of program. Try:");
             printf("%s, or\n%s <path:name.yuv> <int:width> <int:height>\n", argv[0], argv[0]);
-            break;
+            return 1;
     }
 
     if(width == 0 || height == 0){
