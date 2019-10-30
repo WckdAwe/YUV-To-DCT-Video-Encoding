@@ -7,7 +7,11 @@
 
 <br />
 <p align="center">
-  <h1 align="center">YUV to DCT/CXC & energy calculation.</h3>
+  <h1 align="center">YUV To DCT Video Encoding.</h3>
+
+  <p align="center">
+    YUV to DCT/CXC & energy calculation
+  </p>
 </p>
 
 ## Table of Contents
@@ -30,43 +34,20 @@
 
 ## About The Project
 
-This compiler is based on a subset of language C++, created solely for a project assigned to us by [Professor G. Dimitriou][GDIMITRIOU] on the 5th Semester of [CS Dept., University of Thessaly][CSUTH]. (Subject INFS137-Compilers)
-
-In no means we share this as an actual fully working compiler, but rather as the building blocks of a prototype compiler.
-
-You can read more about the C++600 subset instructions (Greek Version Only!) under the [C++600.pdf][C++600.pdf].
+This is an assignment on the subject "Video Compression" of the [Computer Science Dept. University of Thessaly][CSUTH].
 
 ### Built with
- - [Flex - Fast Lexical Analyzer](http://gnuwin32.sourceforge.net/packages/flex.htm)
- - [Bison - Yacc-compatible parser generator](http://gnuwin32.sourceforge.net/packages/bison.htm)
  - Plenty of C and pure love
  
-
 
 <!-- GETTING STARTED -->
 
 ## Getting Started
 
-We have separated our workload into 3 stages. Each stage contains execution instructions for the program accordingly, as well as some extra information that we decided to share for these stages.
+1. **Compile** the project using the command `make` inside the project's directory.
+2. **Run** one of the following commands:
 
-See:
- - [Stage 1 - Lexical Analysis][STAGE1]
- - [Stage 2 - Syntax Analysis][STAGE2]
- - [Stage 3 - Semantics Analysis][STAGE3]
-
-But **before proceeding to these steps**, make sure to have installed any dependencies such as **Flex** and **Bison**
-
-
-
-<!-- ROADMAP -->
-
-## Roadmap
-
-There are currently **no plans for completing or expanding** the project by the original authors ([see below](#authors)). Nonetheless, any [contribution](#contributing) to the project is always welcome.
-
-See the [open issues][issues-url] for a list of proposed features (and known issues).
-
-
+    `./main` or `./main <path:name.yuv> <int:width> <int:height>` 
 
 <!-- Contributing -->
 
@@ -77,14 +58,6 @@ Please read [CONTRIBUTING.md][CONTRIBUTING] for details on our code of conduct, 
 Thanks goes to these wonderful people ✨:
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/TheFamousFurious"><img src="https://avatars1.githubusercontent.com/u/44675773?v=4" width="100px;" alt="TheFamousFurious"/><br /><sub><b>TheFamousFurious</b></sub></a><br /><a href="https://github.com/WckdAwe/C-600-Compiler/commits?author=TheFamousFurious" title="Code">💻</a> <a href="#content-TheFamousFurious" title="Content">🖋</a></td>
-    <td align="center"><a href="http://wckdawe.com"><img src="https://avatars0.githubusercontent.com/u/35025427?v=4" width="100px;" alt="WICKEĐ"/><br /><sub><b>WICKEĐ</b></sub></a><br /><a href="https://github.com/WckdAwe/C-600-Compiler/commits?author=WckdAwe" title="Code">💻</a> <a href="#content-WckdAwe" title="Content">🖋</a> <a href="https://github.com/WckdAwe/C-600-Compiler/commits?author=WckdAwe" title="Tests">⚠️</a> <a href="https://github.com/WckdAwe/C-600-Compiler/issues?q=author%3AWckdAwe" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/TheNotoriousCS"><img src="https://avatars0.githubusercontent.com/u/31367091?v=4" width="100px;" alt="TheNotoriousCS"/><br /><sub><b>TheNotoriousCS</b></sub></a><br /><a href="https://github.com/WckdAwe/C-600-Compiler/commits?author=TheNotoriousCS" title="Code">💻</a> <a href="#content-TheNotoriousCS" title="Content">🖋</a> <a href="https://github.com/WckdAwe/C-600-Compiler/commits?author=TheNotoriousCS" title="Tests">⚠️</a> <a href="https://github.com/WckdAwe/C-600-Compiler/issues?q=author%3ATheNotoriousCS" title="Bug reports">🐛</a></td>
-  </tr>
-</table>
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 <!-- Authors -->
@@ -92,8 +65,6 @@ Thanks goes to these wonderful people ✨:
 ## Authors
 - **Dimitriadis Vasileios** (WckdAwe) --  ( [Website]( http://wckdawe.com) | [Github](https://github.com/wckdawe) )
 - **Kouskouras Taxiarchis** (TheNotoriousCS) -- ( [Github](https://github.com/TheNotoriousCS) )
-
-And special thanks to [Papageorgiou Grigorios](https://github.com/TheFamousFurious) for providing the **Transition Diagram** for "Stage 2 - Syntax Analysis" and some other notable contributions in this project.
 
 
 <!-- License -->
@@ -120,53 +91,26 @@ For security related issues please read [SECURITY.md][SECURITY].
 
 
 
-<!-- ACKNOWLEDGEMENTS -->
 
-## Acknowledgements
-
-Hats off to any person whom contributed to this Project, formally or informally. This couldn't be possible without the assistance of these people.
-
-- Professors [G. Dimitriou][GDIMITRIOU] and [G. Floros][GFLOROS]
-- Professor [Nikolas Papaspirou](https://www.ece.ntua.gr/gr/staff/71) for providing a more helpful Scope Library (Used in Stage 3)
-- Github project [PASC320](https://github.com/nikolaskostakis/Pasc320-Compiler) by [nikolaskostakis](https://github.com/nikolaskostakis)
-- Github project [Llama Compiler](https://github.com/ychatz/compiler) by [ychatz](https://github.com/ychatz)
-
-We have borrowed a-freaking-lot of ideas & code from the above guys to make our stuff kinda work. Make sure to check their individual projects out! :heart:
-
-
-
-
-
-
-
-
-
-
-<!-- C600 Github related links -->
-[STAGE1]: https://github.com/WckdAwe/C-600-Compiler/tree/master/1.%20Lexical%20Analysis
-[STAGE2]: https://github.com/WckdAwe/C-600-Compiler/tree/master/2.%20Syntax%20Analysis
-[STAGE3]: https://github.com/WckdAwe/C-600-Compiler/tree/master/3.%20Semantics%20Analysis
-[CONTRIBUTING]: https://github.com/WckdAwe/C-600-Compiler/blob/master/CONTRIBUTING.md
-[SECURITY]: https://github.com/WckdAwe/C-600-Compiler/blob/master/SECURITY.md
-[LICENSE]: https://github.com/WckdAwe/C-600-Compiler/blob/master/LICENSE.md
-[DISCLAIMER]: https://github.com/WckdAwe/C-600-Compiler/blob/master/DISCLAIMER.md
+<!-- Github related links -->
+[CONTRIBUTING]: https://github.com/WckdAwe/YUV-To-DCT-Video-Encoding/blob/master/CONTRIBUTING.md
+[SECURITY]: https://github.com/WckdAwe/YUV-To-DCT-Video-Encoding/blob/master/SECURITY.md
+[LICENSE]: https://github.com/WckdAwe/YUV-To-DCT-Video-Encoding/blob/master/LICENSE.md
+[DISCLAIMER]: https://github.com/WckdAwe/YUV-To-DCT-Video-Encoding/blob/master/DISCLAIMER.md
 
 
 
 <!-- Helpful Links & People -->
 [CSUTH]: http://cs.uth.gr/
-[GDIMITRIOU]: https://www.e-ce.uth.gr/department/faculty/dimitriu/?lang=en
-[GFLOROS]: https://www.e-ce.uth.gr/department/faculty/gefloros/?lang=en
-[C++600.pdf]: https://github.com/WckdAwe/C-600-Compiler/blob/master/c%2B%2B600.pdf
 
 <!-- othneildrew's Best-README-Template -->
-[contributors-shield]: https://img.shields.io/github/contributors/WckdAwe/C-600-Compiler.svg?style=flat-square
-[contributors-url]: https://github.com/WckdAwe/C-600-Compiler/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/WckdAwe/C-600-Compiler.svg?style=flat-square
-[forks-url]: https://github.com/WckdAwe/C-600-Compiler/network/members
-[stars-shield]: https://img.shields.io/github/stars/WckdAwe/C-600-Compiler.svg?style=flat-square
-[stars-url]: https://github.com/WckdAwe/C-600-Compiler/stargazers
-[issues-shield]: https://img.shields.io/github/issues/WckdAwe/C-600-Compiler.svg?style=flat-square
-[issues-url]: https://github.com/WckdAwe/C-600-Compiler/issues
-[license-shield]: https://img.shields.io/github/license/WckdAwe/C-600-Compiler.svg?style=flat-square
-[license-url]: https://github.com/WckdAwe/C-600-Compiler/blob/master/LICENSE.md
+[contributors-shield]: https://img.shields.io/github/contributors/WckdAwe/YUV-To-DCT-Video-Encoding.svg?style=flat-square
+[contributors-url]: https://github.com/WckdAwe/YUV-To-DCT-Video-Encoding/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/WckdAwe/YUV-To-DCT-Video-Encoding.svg?style=flat-square
+[forks-url]: https://github.com/WckdAwe/YUV-To-DCT-Video-Encoding/network/members
+[stars-shield]: https://img.shields.io/github/stars/WckdAwe/YUV-To-DCT-Video-Encoding.svg?style=flat-square
+[stars-url]: https://github.com/WckdAwe/YUV-To-DCT-Video-Encoding/stargazers
+[issues-shield]: https://img.shields.io/github/issues/WckdAwe/YUV-To-DCT-Video-Encoding.svg?style=flat-square
+[issues-url]: https://github.com/WckdAwe/YUV-To-DCT-Video-Encoding/issues
+[license-shield]: https://img.shields.io/github/license/WckdAwe/YUV-To-DCT-Video-Encoding.svg?style=flat-square
+[license-url]: https://github.com/WckdAwe/YUV-To-DCT-Video-Encoding/blob/master/LICENSE.md
