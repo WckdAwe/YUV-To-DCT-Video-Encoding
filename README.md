@@ -20,14 +20,11 @@
 - [About The Project](#about-the-project)
   - [Built with](#built-with)
 - [Getting Started](#getting-started)
-- [Roadmap](#roadmap)
 - [Contributing ✨](#contributing-%e2%9c%a8)
 - [Authors](#authors)
 - [License](#license)
 - [Disclaimer](#disclaimer)
 - [Security](#security)
-- [Acknowledgements](#acknowledgements)
-
 
 
 <!-- ABOUT THE PROJECT -->
