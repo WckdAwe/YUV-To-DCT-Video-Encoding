@@ -14,13 +14,11 @@
 double CXC_CF[4][4] = {{1, 1, 1, 1}, {2, 1,-1,-2}, {1,-1,-1, 1}, {1,-2, 2,-1}};
 double CXC_CFT[4][4] = {{1, 2, 1, 1}, {1, 1,-1,-2}, {1,-1,-1, 2}, {1,-2, 1,-1}};
 const double CXC_A = 0.5;
-const double CXC_B = 0.6324; // sqrt((double)2/5);
+const double CXC_B = 0.6324;
 const double CXC_EF[4][4] = {{0.25, 0.1581, 0.25, 0.1581}, {0.1581, 0.025, 0.1581, 0.025},
                              {0.25, 0.1581, 0.25, 0.1581}, {0.1581, 0.025, 0.1581, 0.025}};
-double *CXC_CF_P[4][4];   // I do not like this solution.
-double *CXC_CFT_P[4][4];  // I could research a better one in the future.
-// double CXC_EF[4][4] = {{pow(CXC_A, 2), (CXC_A*CXC_B)/2, pow(CXC_A, 2), (CXC_A*CXC_B)/2}, {(CXC_A*CXC_B)/2, (pow(CXC_B, 2)/4), (CXC_A*CXC_B)/2, (pow(CXC_B, 2)/4)},
-//                        {pow(CXC_A, 2), (CXC_A*CXC_B)/2, pow(CXC_A, 2), (CXC_A*CXC_B)/2}, {(CXC_A*CXC_B)/2, (pow(CXC_B, 2)/4), (CXC_A*CXC_B)/2, (pow(CXC_B, 2)/4)}};
+double *CXC_CF_P[4][4]; 
+double *CXC_CFT_P[4][4]; 
 /* ---- END - CXC Transformation Variables ---- */
 
 
@@ -33,8 +31,8 @@ double *CXC_CFT_P[4][4];  // I could research a better one in the future.
 void init_no_args(char *filename, uint16_t *width, uint16_t *height);
 uint16_t intArg(char *arg);
 void matrixMultiply(int N, double *mat1[][N], double *mat2[][N], double *res[][N]);
-void YUVToDCT(int N, uint8_t *YUV[][N], int16_t *DCT[][N]);
-void YUVToCXC(int N, uint8_t *YUV[][N], int16_t *CXC[][N]);
+void YUVToDCT(int N, uint8_t *YUV[][N], double *DCT[][N]);
+void YUVToCXC(int N, uint8_t *YUV[][N], double *CXC[][N]);
 uint8_t* readYUVFrame(FILE *fp, uint16_t width, uint16_t height);
 bool verifyYUVFile(FILE *fp, uint16_t width, uint16_t height);
 uint32_t getFileSize(FILE *fp, uint64_t pointer_return);
@@ -97,8 +95,11 @@ int main(int argc, char *argv[]){
                                    // readY, read U, read V, skipY, skipU, skipV functions.
                                    // The caveat is that we allocate more memory than what we should to process
                                    // the Y frame.
-    int16_t *DCT_Y_data = malloc(width*height*sizeof(int16_t)); // DCT can take negative values
-    int16_t *CXC_Y_data = malloc(width*height*sizeof(int16_t)); // CXC can take negative values
+                                   // Important: This value gets overriden. Test Data only for testing purposes 
+                                   // while development!
+    double *DCT_Y_data = malloc(width*height*sizeof(double)); // DCT can take negative values
+    double *CXC_Y_data = malloc(width*height*sizeof(double)); // CXC can take negative values
+
     if(DCT_Y_data == NULL || CXC_Y_data == NULL){
         perror("Can't allocate enough memory for DCT_Y/CXC_Y table");
         return 1;
@@ -146,13 +147,13 @@ int main(int argc, char *argv[]){
     --------------------------------------------------------------------- */
     
     uint8_t *subtable_yuv[sample_size][sample_size]; // All subtables are tables of pointers
-    int16_t *subtable_dct[sample_size][sample_size]; // so we can create an association between
-    int16_t *subtable_cxc[sample_size][sample_size]; // 2D subtables and the 1D YUV/DCD/CXC arrays.
+    double *subtable_dct[sample_size][sample_size]; // so we can create an association between
+    double *subtable_cxc[sample_size][sample_size]; // 2D subtables and the 1D YUV/DCD/CXC arrays.
     double energy_yuv[sample_size][sample_size];
     double energy_dct[sample_size][sample_size];
     double energy_cxc[sample_size][sample_size];
-    memset(energy_yuv, 0, sample_size*sample_size*sizeof(uint64_t));
-    memset(energy_dct, 0, sample_size*sample_size*sizeof(uint64_t));
+    memset(energy_yuv, 0, sample_size*sample_size*sizeof(uint64_t)); // Initialize all tables
+    memset(energy_dct, 0, sample_size*sample_size*sizeof(uint64_t)); // with 0s
     memset(energy_cxc, 0, sample_size*sample_size*sizeof(uint64_t));
 
 
@@ -245,10 +246,6 @@ int main(int argc, char *argv[]){
         puts("");
     }
     printf("  Sum: %.0lf\n", energy_sums[2]);
-
-    puts("Energies should be exactly the same.");
-    puts("The difference in our scenarios are caused due to conversions to int, losing a lot of decimal points.");
-    puts("These add up to create such energy differences, but we can see that they are approximately the same.");
     return 0;
 }
 
@@ -359,7 +356,7 @@ void matrixMultiply(int N, double *mat1[][N], double *mat2[][N], double *res[][N
  *  returns: Fills DCT matrix with the appropriate values after
  *    the DCT transformation from YUV.
  */
-void YUVToDCT(int N, uint8_t *YUV[][N], int16_t *DCT[][N]){
+void YUVToDCT(int N, uint8_t *YUV[][N], double *DCT[][N]){
     int i, j, x, y;
     double Cx, Cy;
     float sum=0;
@@ -392,7 +389,7 @@ void YUVToDCT(int N, uint8_t *YUV[][N], int16_t *DCT[][N]){
  *  returns: Fills CXC matrix with the appropriate values after
  *    the CXC transformation from YUV.
  */
-void YUVToCXC(int N, uint8_t *YUV[][N], int16_t *CXC[][N]){
+void YUVToCXC(int N, uint8_t *YUV[][N], double *CXC[][N]){
     int i, j;
     double *tmp1_p[N][N], *tmp2_p[N][N];
     double tmp1[N][N], tmp2[N][N];
@@ -492,43 +489,3 @@ uint32_t getTotalFrames(uint32_t total_size, uint16_t width, uint16_t height){
     uint32_t expected_size = size_yuv_420(width, height);
     return total_size/expected_size;
 }
-
-
-
-
-// // read a raw yuv image file
-// // raw yuv files can be generated by ffmpeg, for example, using :
-// //  ffmpeg -i test.png -c:v rawvideo -pix_fmt yuv420p test.yuv
-// // the returned image channels are contiguous, and Y stride=width, U and V stride=width/2
-// // memory must be freed with free
-// bool readRawYUV(const char *filename, uint32_t width, uint32_t height, uint8_t **YUV){
-// 	FILE *fp = fopen(filename, "rb");
-// 	if(!fp){
-// 		perror("Error opening yuv image for read");
-// 		return false;
-// 	}
-	
-	
-// 	uint32_t size = getFileSize(fp, 0);
-//     uint32_t frames = 3;
-//     // uint32_t expected_size = (width*height + 2*((width+1)/2)*((height+1)/2)) * frames; // 4:2:2
-//     uint32_t expected_size = (width*height + 2*((width+1)/2)*((height+1)/2))*3; // 4:2:0
-    
-//     // uint32_t expected_size = width*height*(3/2)*300;
-//     // size!=(  Y[w*h]     + 2* w*h/2  ) -- Explain
-//     if(size!=expected_size){
-// 		fprintf(stderr, "Wrong size of yuv image : %d bytes, expected %d bytes.\n", size, expected_size);
-// 		fclose(fp);
-// 		return false;
-// 	}
-
-//     *YUV = malloc(size);
-// 	size_t result = fread(*YUV, 1, size, fp);
-// 	if (result != size) {
-// 		perror("Error reading yuv image");
-// 		fclose(fp);
-// 		return false;
-// 	}
-// 	fclose(fp);
-// 	return true;
-// }
